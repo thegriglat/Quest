@@ -17,6 +17,12 @@ categories = ["command-line-utilities"]
 name = "just"
 path = "src/main.rs"
 
+[profile.release]
+opt-level = 3
+lto = true
+strip = true
+
+
 [dependencies]
 crossterm = { version = "0.19.0", features = ['serde'] }
 tui = { version = "0.14", default-features = false, features = ['crossterm', 'serde'] }
