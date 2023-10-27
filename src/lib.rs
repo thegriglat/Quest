@@ -73,9 +73,13 @@ pub struct App {
 
 impl App {
     pub fn new(quests: &[Quest], configs: Configs) -> Self {
+        let selected_quest = match quests.len() {
+            0 => None,
+            _ => Some(0),
+        };
         Self {
             quests: quests.to_vec(),
-            selected_quest: Some(0),
+            selected_quest,
             input: String::new(),
             input_mode: InputMode::Normal,
             should_exit: false,
