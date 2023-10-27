@@ -42,9 +42,7 @@ default configs:
       "check_sign": "Green"
     },
     "keybindings": {
-      "exit_app": {
-        "Char": "q"
-      },
+      "exit_app": "Esc",
       "new_quest": {
         "Char": "n"
       },

@@ -45,7 +45,7 @@ pub struct KeyBindings {
 impl Default for KeyBindings {
     fn default() -> Self {
         Self {
-            exit_app: KeyCode::Char('q'),
+            exit_app: KeyCode::Esc,
             new_quest: KeyCode::Char('n'),
             check_and_uncheck_quest: KeyCode::Enter,
             list_up: KeyCode::Up,
