@@ -138,7 +138,7 @@ pub fn navigation_hint(app: &App) -> Paragraph {
                 ),
                 Span::styled(" delete quest", app.default_style()),
             ],
-            app.default_style().add_modifier(Modifier::RAPID_BLINK),
+            app.default_style(),
         ),
         InputMode::Adding => (
             vec![
