@@ -6,17 +6,33 @@ use crossterm::{
 use quest_tui::{
     events::{handle_events, handle_input_cursor},
     file_handler::{load_configs, load_quests, save_quests},
-    widget, App, CrossTerminal, DynResult, TerminalFrame,
+    widget, App, CrossTerminal, DynResult, Quest, TerminalFrame,
 };
-use std::{error::Error, io::stdout};
+use std::{error::Error, io::stdout, process};
 use tui::{backend::CrosstermBackend, Terminal};
 
 fn main() -> DynResult {
-    let mut terminal = initialize_terminal()?;
-
     let quests = load_quests()?;
     let configs = load_configs()?;
     let mut app = App::new(&quests, configs);
+
+    let args = std::env::args().collect::<Vec<String>>();
+
+    if args.len() > 1 {
+        let quest_name = args
+            .iter()
+            .skip(1)
+            .fold(String::new(), |r, c| r + " " + c)
+            .trim()
+            .to_string();
+        let quest = Quest::new(quest_name.clone());
+        app.add_quest(quest);
+        save_quests(&app.quests)?;
+        println!("Quest '{}' has beed added!", quest_name);
+        process::exit(0);
+    }
+
+    let mut terminal = initialize_terminal()?;
 
     draw_ui(&mut terminal, &mut app)?;
     cleanup_terminal(terminal)?;

@@ -114,4 +114,14 @@ impl App {
             self.default_style().add_modifier(Modifier::CROSSED_OUT)
         }
     }
+
+    pub fn delete_quest(&mut self, index: usize) {
+        if index < self.quests.len() {
+            self.quests.remove(index);
+        }
+    }
+
+    pub fn add_quest(&mut self, quest: Quest) {
+        self.quests.push(quest);
+    }
 }

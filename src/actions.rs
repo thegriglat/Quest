@@ -35,7 +35,7 @@ pub fn check_and_uncheck_quest(app: &mut App) {
 
 pub fn delete_quest(app: &mut App) {
     if let Some(index) = app.selected_quest {
-        app.quests.remove(index);
+        app.delete_quest(index);
         if app.quests.is_empty() {
             app.selected_quest = None;
         } else if app.selected_quest.unwrap() == app.quests.len() {
@@ -46,7 +46,7 @@ pub fn delete_quest(app: &mut App) {
 
 pub fn save_quest(app: &mut App) {
     let new_quest = Quest::new(app.input.drain(..).collect());
-    app.quests.push(new_quest);
+    app.add_quest(new_quest)
 }
 
 pub fn exit_adding(app: &mut App) {
