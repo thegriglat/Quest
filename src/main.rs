@@ -69,7 +69,7 @@ fn app_view(frame: &mut TerminalFrame, app: &App) {
 
     let quest_input = widget::quest_input(app);
     frame.render_widget(quest_input, main_chunks[1]);
-    handle_input_cursor(&app, frame, &main_chunks);
+    handle_input_cursor(app, frame, &main_chunks);
 
     let navigation_hint = widget::navigation_hint(app);
     frame.render_widget(navigation_hint, main_chunks[2]);
