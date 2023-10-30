@@ -1,6 +1,6 @@
 # Quest-tui
 a simple todo list terminal user interface
-![Demo](/images/demo.png)
+![Demo](/images/demo.gif)
 
 ### Built With
 - [Rust🦀](https://www.rust-lang.org/)
