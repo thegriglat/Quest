@@ -39,8 +39,8 @@ pub fn quest_list(app: &App) -> List {
 
     List::new(quests).style(app.default_style()).block(
         Block::default()
-            .title("Quests")
-            .borders(Borders::ALL)
+            .title(" Quests ")
+            .borders(Borders::all())
             .border_type(BorderType::Rounded)
             .style(app.default_style()),
     )
@@ -93,7 +93,7 @@ pub fn quest_input(app: &App) -> Paragraph {
     let input = Paragraph::new(app.input.as_ref()).style(style).block(
         Block::default()
             .borders(Borders::ALL)
-            .title("New Quest")
+            .title(" New Quest ")
             .border_type(BorderType::Rounded)
             .style(style),
     );
@@ -108,6 +108,7 @@ pub fn navigation_hint(app: &App) -> Paragraph {
     let (msg, style) = match app.input_mode {
         InputMode::Normal => (
             vec![
+                Span::styled(" ", app.default_style()),
                 Span::styled(
                     keycode_to_string(keybindings.exit_app),
                     app.default_style().add_modifier(Modifier::BOLD),
@@ -122,7 +123,7 @@ pub fn navigation_hint(app: &App) -> Paragraph {
                     keycode_to_string(keybindings.check_and_uncheck_quest),
                     app.default_style().add_modifier(Modifier::BOLD),
                 ),
-                Span::styled(" check/uncheck quest | ", app.default_style()),
+                Span::styled(" toggle quest | ", app.default_style()),
                 Span::styled(
                     format!(
                         "{}/{}",
