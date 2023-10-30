@@ -1,42 +1,42 @@
 use crate::{actions, App, InputMode, TerminalFrame};
 use crossterm::event::{KeyCode, KeyEvent};
-use tui::layout::Rect;
+use tui::{layout::Rect, widgets::ListState};
 
 /// Input events handler
-pub fn handle_events(event: KeyEvent, app: &mut App) {
+pub fn handle_events(event: KeyEvent, app: &mut App, list_state: &mut ListState) {
     match app.input_mode {
-        InputMode::Normal => handle_normal_events(app, event.code),
-        InputMode::Adding => handle_adding_events(app, event.code),
+        InputMode::Normal => handle_normal_events(app, event.code, list_state),
+        InputMode::Adding => handle_adding_events(app, event.code, list_state),
     }
 }
 
 /// When user is viewing quests
-fn handle_normal_events(app: &mut App, keycode: KeyCode) {
+fn handle_normal_events(app: &mut App, keycode: KeyCode, list_state: &mut ListState) {
     let keybindings = &app.configs.keybindings;
 
     if keycode == keybindings.new_quest {
-        actions::new_quest(app);
+        actions::new_quest(app, list_state);
     } else if keycode == keybindings.exit_app {
         actions::exit_app(app);
     } else if keycode == keybindings.list_up {
-        actions::list_up(app);
+        actions::list_up(list_state);
     } else if keycode == keybindings.list_down {
-        actions::list_down(app);
+        actions::list_down(app.quests.len(), list_state);
     } else if keycode == keybindings.check_and_uncheck_quest {
-        actions::check_and_uncheck_quest(app);
+        actions::check_and_uncheck_quest(app, list_state);
     } else if keycode == keybindings.delete_quest {
-        actions::delete_quest(app);
+        actions::delete_quest(app, list_state);
     }
 }
 
 /// When user adding a new quest
-fn handle_adding_events(app: &mut App, keycode: KeyCode) {
+fn handle_adding_events(app: &mut App, keycode: KeyCode, list_state: &mut ListState) {
     let keybindings = &app.configs.keybindings;
 
     if keycode == keybindings.save_quest && !app.input.trim().is_empty() {
         actions::save_quest(app);
     } else if keycode == keybindings.exit_adding {
-        actions::exit_adding(app);
+        actions::exit_adding(app, list_state);
     } else if let KeyCode::Char(c) = keycode {
         actions::input_add_char(app, c);
     } else if let KeyCode::Backspace = keycode {

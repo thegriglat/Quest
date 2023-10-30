@@ -1,45 +1,51 @@
 //! Actions to do after a specific event occurs
 
+use tui::widgets::ListState;
+
 use crate::{App, InputMode, Quest};
 
-pub fn new_quest(app: &mut App) {
+pub fn new_quest(app: &mut App, list_state: &mut ListState) {
     app.input_mode = InputMode::Adding;
-    app.selected_quest = None;
+    list_state.select(None)
 }
 
 pub fn exit_app(app: &mut App) {
     app.should_exit = true;
 }
 
-pub fn list_up(app: &mut App) {
-    if let Some(index) = app.selected_quest {
+pub fn list_up(list_state: &mut ListState) {
+    if let Some(index) = list_state.selected() {
         if index > 0 {
-            app.selected_quest = Some(index - 1);
+            list_state.select(Some(index - 1));
         }
     }
 }
 
-pub fn list_down(app: &mut App) {
-    if let Some(index) = app.selected_quest {
-        if index < app.quests.len() - 1 {
-            app.selected_quest = Some(index + 1);
+pub fn list_down(quests_len: usize, list_state: &mut ListState) {
+    if let Some(index) = list_state.selected() {
+        if index < quests_len - 1 {
+            list_state.select(Some(index + 1));
         }
     }
 }
 
-pub fn check_and_uncheck_quest(app: &mut App) {
-    if let Some(index) = app.selected_quest {
+pub fn check_and_uncheck_quest(app: &mut App, list_state: &mut ListState) {
+    if let Some(index) = list_state.selected() {
         app.quests[index].completed = !app.quests[index].completed;
     }
 }
 
-pub fn delete_quest(app: &mut App) {
-    if let Some(index) = app.selected_quest {
+pub fn delete_quest(app: &mut App, list_state: &mut ListState) {
+    if let Some(index) = list_state.selected() {
         app.delete_quest(index);
         if app.quests.is_empty() {
-            app.selected_quest = None;
-        } else if app.selected_quest.unwrap() == app.quests.len() {
-            app.selected_quest = Some(app.quests.len() - 1);
+            list_state.select(None);
+        } else {
+            let new_index = match index {
+                0 => 0,
+                _ => index - 1,
+            };
+            list_state.select(Some(new_index));
         }
     }
 }
@@ -49,9 +55,9 @@ pub fn save_quest(app: &mut App) {
     app.add_quest(new_quest)
 }
 
-pub fn exit_adding(app: &mut App) {
+pub fn exit_adding(app: &mut App, list_state: &mut ListState) {
     app.input_mode = InputMode::Normal;
-    app.selected_quest = Some(0);
+    list_state.select(Some(0));
 }
 
 pub fn input_add_char(app: &mut App, c: char) {

@@ -33,45 +33,40 @@ pub fn quest_list(app: &App) -> List {
     let quests: Vec<ListItem> = app
         .quests
         .iter()
-        .enumerate()
         .map(|q| indexed_quest_item(app, q))
         .collect();
 
-    List::new(quests).style(app.default_style()).block(
-        Block::default()
-            .title(" Quests ")
-            .borders(Borders::all())
-            .border_type(BorderType::Rounded)
-            .style(app.default_style()),
-    )
+    List::new(quests)
+        .highlight_style(app.selection_style())
+        .style(app.default_style())
+        .block(
+            Block::default()
+                .title(" Quests ")
+                .borders(Borders::all())
+                .border_type(BorderType::Rounded)
+                .style(app.default_style()),
+        )
 }
 
 /// Check if a quest is selected then renders it properly
-fn indexed_quest_item<'a>(app: &'a App, (index, quest): (usize, &Quest)) -> ListItem<'a> {
-    if let Some(selected_index) = app.selected_quest {
-        quest_item(
-            quest.title.clone(),
-            quest.completed,
-            selected_index == index,
-            app,
-        )
-    } else {
-        quest_item(quest.title.clone(), quest.completed, false, app)
-    }
+fn indexed_quest_item<'a>(app: &'a App, quest: &Quest) -> ListItem<'a> {
+    quest_item(quest.title.clone(), quest.completed, app)
 }
 
 /// Widget to show a single quest
-fn quest_item(title: String, completed: bool, selected: bool, app: &App) -> ListItem {
-    let style = if selected {
-        app.selection_style()
-    } else {
-        app.default_style()
-    };
+fn quest_item(title: String, completed: bool, app: &App) -> ListItem {
+    let style = app.default_style();
 
     let quest = if completed {
         ListItem::new(Spans::from(vec![
-            Span::styled("✔  ", app.check_sign_style(selected)),
-            Span::styled(title, app.checked_quest_style(selected)),
+            Span::styled(
+                "✔  ",
+                app.default_style().add_modifier(Modifier::CROSSED_OUT),
+            ),
+            Span::styled(
+                title,
+                app.default_style().add_modifier(Modifier::CROSSED_OUT),
+            ),
         ]))
     } else {
         ListItem::new(Spans::from(vec![

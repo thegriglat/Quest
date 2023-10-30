@@ -9,7 +9,7 @@ use quest_tui::{
     widget, App, CrossTerminal, DynResult, Quest, TerminalFrame,
 };
 use std::{error::Error, io::stdout, process};
-use tui::{backend::CrosstermBackend, Terminal};
+use tui::{backend::CrosstermBackend, widgets::ListState, Terminal};
 
 fn main() -> DynResult {
     let quests = load_quests()?;
@@ -55,13 +55,16 @@ fn initialize_terminal() -> Result<CrossTerminal, Box<dyn Error>> {
 
 /// Draw user interface to terminal
 fn draw_ui(terminal: &mut CrossTerminal, app: &mut App) -> DynResult {
+    let mut list_state = ListState::default();
+    list_state.select(Some(0));
+
     while !app.should_exit {
         terminal.draw(|f| {
-            app_view(f, app);
+            app_view(f, app, &mut list_state);
         })?;
 
         if let Event::Key(event) = read()? {
-            handle_events(event, app);
+            handle_events(event, app, &mut list_state);
         }
     }
 
@@ -77,11 +80,12 @@ fn cleanup_terminal(mut terminal: CrossTerminal) -> DynResult {
 }
 
 /// A single frame of application view
-fn app_view(frame: &mut TerminalFrame, app: &App) {
+fn app_view(frame: &mut TerminalFrame, app: &App, list_state: &mut ListState) {
     let main_chunks = widget::main_chunks(frame.size());
 
     let quest_list = widget::quest_list(app);
-    frame.render_widget(quest_list, main_chunks[0]);
+
+    frame.render_stateful_widget(quest_list, main_chunks[0], list_state);
 
     let quest_input = widget::quest_input(app);
     frame.render_widget(quest_input, main_chunks[1]);
