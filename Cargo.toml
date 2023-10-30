@@ -1,12 +1,12 @@
 [package]
-name = "quest-tui"
-version = "0.2.0"
-authors = ["frustak <soulburn007@gmail.com>"]
+name = "just"
+version = "0.2.1"
+authors = ["frustak <soulburn007@gmail.com>", "Grigory Latyshev <thegriglat@gmail.com>"]
 edition = "2018"
 license = "MIT OR Apache-2.0"
 description = "A crossplatform TUI todo list"
-homepage = "https://github.com/frustak/Quest"
-repository = "https://github.com/frustak/Quest"
+homepage = "https://github.com/thegriglat/Quest"
+repository = "https://github.com/thegriglat/Quest"
 readme = "README.md"
 keywords = ["cli", "tui", "todo", "quest", "task"]
 categories = ["command-line-utilities"]

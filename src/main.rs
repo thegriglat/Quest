@@ -3,7 +3,7 @@ use crossterm::{
     execute,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
-use quest_tui::{
+use just::{
     events::{handle_events, handle_input_cursor},
     file_handler::{load_configs, load_quests, save_quests},
     widget, App, CrossTerminal, DynResult, Quest, TerminalFrame,
