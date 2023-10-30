@@ -1,4 +1,4 @@
-# Quest-tui
+# Just
 a simple todo list terminal user interface
 ![Demo](/images/demo.gif)
 
@@ -13,6 +13,7 @@ Steps to install and run the application in your terminal.
 - Rust ([installtion guide](https://www.rust-lang.org/tools/install))
 
 ### Installation
+> not available yet
 - `cargo install quest-tui`
 
 ### Building Locally
